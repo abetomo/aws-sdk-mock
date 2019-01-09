@@ -288,6 +288,8 @@ test('AWS.mock function should mock AWS service and method on the service', func
     var s3 = new AWS.S3();
     var req = s3.getObject('getObject', {});
     st.equals(typeof req.on, 'function');
+    // Test of chain call.
+    st.equals(typeof req.on().on().on, 'function');
     st.end();
   });
   t.test('call send method of request object', function(st) {
