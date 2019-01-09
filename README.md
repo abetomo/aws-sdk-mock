@@ -233,6 +233,51 @@ AWS.Promise = Q.Promise;
 **/
 ```
 
+### Callback and Method chain
+
+You can test both callback code and method chain code.
+
+Example:
+
+```js
+const AWSMock = require('aws-sdk-mock');
+const AWS = require('aws-sdk');
+AWSMock.setSDKInstance(AWS);
+
+AWSMock.mock(
+  'S3',
+  'getObject',
+  (err, callback) => {
+    callback(null, 'test');
+  }
+);
+
+const s3 = new AWS.S3()
+params = {
+  Bucket: 'Bucket',
+  Key: 'Key'
+}
+
+// callback
+s3.getObject(params, (err, data) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(data);
+})
+
+// method chain
+s3.getObject(params)
+  .promise()
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+```
+
 ## Documentation
 
 ### `AWS.mock(service, method, replace)`
